@@ -1,0 +1,23 @@
+Windows Batch Scripting:
+ - Use "echo [%date% %time%] - Error message" to write timestamp to logfile
+ - Use SETLOCAL DELAYEDEXPANSION to dynamically set MSG within an IF bloc and then
+       output using "echo !MSG! >> %LOGFILE%". Notice the use of exclamation (!) instead of %
+       Excalmation delays the expansion (Normally expansion happens at the beginning of mulit-line IF, FOR statements.
+       To take advantage of dynamically setting a variable as a result of a condition, we have to delay the expansion.
+       
+CURL utility
+  We can use CURL to check if a port is open or accessible across a firewall.
+  e.g. curl -k -v telnet://host:port
+  -k: suprresses the SSL/TLS warning
+  -v: verbose output
+  
+openssl:
+   openssl is included with PeopleSoft server install.
+   %PS_HOME%\bin\server\winx86\openssl.exe
+   
+   
+   
+  
+
+
+
