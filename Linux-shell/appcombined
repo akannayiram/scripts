@@ -1,0 +1,157 @@
+#!/bin/bash
+# ***************************
+# Monitor iApp Log File (Retirees)
+#    - Al Kannayiram, April 2018
+# ***************************
+set +x
+. $HOME/iapp.env
+srvr=`hostname`
+SLEEPTIME=300
+# Limit the number of log files
+#for i in `ls -tr $LOGDIR/spring*`
+for i in `ls -tr $LOGDIR/spring*.[1234].log`
+do
+ LOGFILES="$LOGFILES $i"
+done
+LOGFILES="$LOGFILES $LOGFILE"
+#echo "LOGFILES: $LOGFILES"
+#LOGFILES=$LOGFILE
+#LOGFILES=$LOGDIR/spring*
+STAGEFILE=/tmp/alapp$$.log
+
+# Start POST 
+STARTPOSTRET="Start[[:space:]]POST[[:space:]]/retiree"
+STARTPOSTAPP="Start[[:space:]]POST[[:space:]]/applicant"
+#End POST
+ENDPOSTRET="End.*POST[[:space:]]/retiree"
+ENDPOSTAPP="End.*POST[[:space:]]/applicant"
+
+#while true
+#do
+# ******
+# Check the log for the last four days - Al 6/25/2018
+# ******
+#currdt=`date '+%d-%m-%Y'`
+#priordt1=`date '+%d-%m-%Y' -d"-1day"`
+#priordt2=`date '+%d-%m-%Y' -d"-2day"`
+#priordt3=`date '+%d-%m-%Y' -d"-3day"`
+currdt=`date '+%m-%d-%Y'`
+priordt1=`date '+%m-%d-%Y' -d"-1day"`
+priordt2=`date '+%m-%d-%Y' -d"-2day"`
+priordt3=`date '+%m-%d-%Y' -d"-3day"`
+echo "==================================================="
+echo "BEGIN: `date '+%c'`: Searching for Applicant Registration"
+echo "BEGIN: Hostname: ${srvr}"
+echo "BEGIN: currdt: $currdt priordt1: $priordt1 priordt2: $priordt2 priordt3: $priordt3"
+echo "==================================================="
+# ***
+#grep "^`date '+%d-%m-%Y'`" $LOGFILES|egrep "Start.*POST /|End.*POST /|\"AppInput\"|appResponse={\"Status| Start | End |SCIMClientOIM.processHTTPCall|callDcxApplicant|https://api.coned.com/" > $STAGEFILE
+egrep "^$currdt|^$priordt1|^$priordt2|^$priordt3" $LOGFILES|egrep "Start.*POST /|End.*POST /|\"AppInput\"|appResponse={\"Status| Start | End |SCIMClientOIM.processHTTPCall|callDcxApplicant|https://api.coned.com/" > $STAGEFILE
+
+printline="no"
+let i=0
+while IFS= read -r line
+do
+line=`echo $line|sed 's/\x1b\[[0-9;]*m//g'`
+# POST /applicant
+if [[ $line =~ ${STARTPOSTAPP} ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*--- //"`
+   printline="yes"
+   i=$((i + 1))
+   echo "##################################################"
+   echo " "
+   echo "${i}) $line2"
+fi
+
+if [[ $line =~ ${ENDPOSTAPP} ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*--- //"`
+   printline="no"
+   echo "${i}) $line2"
+fi
+
+if [[ $line =~ ${STARTPOSTRET} ]] ; then
+   printline="no"
+fi
+
+if [[ $line =~ ${ENDPOSTRET} ]] ; then
+   printline="no"
+fi
+
+if [[ $line =~ \"AppInput\" ]] ; then
+   line2=`echo $line|awk '{print $1 " " $2 " " $15}'|sed -e "s/^.*log://"|sed -e "s/\"{\"AppInput\"/AppInput/"|sed -e "s/\}\"//"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ appResponse ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[.*null//"|sed -e "s/, app/app/"|sed -e "s/\}\}/}/"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ Start[[:space:]]PeopleSoft[[:space:]]Request ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- Start /Start /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ Start[[:space:]]OIM[[:space:]]Request ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- Start /Start /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ Start[[:space:]]callDcxApplicant ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- Start /Start /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ callDcxApplicant.*Start[[:space:]]Update[[:space:]]User[[:space:]]Request ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- Start /Start /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ callDcxApplicant.*Start[[:space:]]Add[[:space:]]User.*Group ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- Start /Start /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ End[[:space:]]PeopleSoft[[:space:]]Request ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- End /End /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ End[[:space:]]Errored[[:space:]]OIM[[:space:]]Request ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- End /End /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ callDcxApplicant.*End[[:space:]]callDcx ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*- End /End /"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ SCIMClientOIM.processHTTPCall.*Response[[:space:]]code ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*SCIMClientOIM.processHTTPCall - Response code/SCIMClientOIM - Response code/"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ SCIMClientOIM.processHTTPCall.*Response[[:space:]]Body.*IAM-305000 ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*SCIMClientOIM.processHTTPCall - Response Body/SCIMClientOIM - Response Body/"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+if [[ $line =~ handleResponse.*P.*https://api.coned.com/ ]] ; then
+   line2=`echo $line|sed -e "s/^.*log://"|sed -e "s/\[\[ACTIVE.*handleResponse - //"`
+   [[ $printline == "yes" ]] && echo "${i}) $line2"
+fi
+
+done < $STAGEFILE
+echo "##################################################"
+echo " "
+echo "==================================================="
+echo "END: `date '+%c'`: Searching for Applicant Registration"
+#echo "END: Hostname: ${srvr} - will wake up in $SLEEPTIME secs"
+echo "END: Hostname: ${srvr} "
+echo "END: currdt: $currdt priordt1: $priordt1 priordt2: $priordt2 priordt3: $priordt3"
+echo "==================================================="
+rm -f $STAGEFILE
+#sleep $SLEEPTIME
+#done
+
