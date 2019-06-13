@@ -1,0 +1,11 @@
+On Linux:
+netcat can be used to check if a port is open.
+If open, check the return code.
+If return code $? is zero, then it is open; otherwose not open.
+nc <host or IP> <port> </dev/null; echo $?
+
+
+On windows:
+Download portqry utility from Microsoft download site and use it like:
+portqry -n <host or IP> -e  <port>
+
