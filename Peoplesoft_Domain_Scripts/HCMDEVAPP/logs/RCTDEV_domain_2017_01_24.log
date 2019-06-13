@@ -1,0 +1,290 @@
+    
+    
+########################################################################## 
+[Tue 01/24/2017  8:04:13.92] - Begin [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+[Tue 01/24/2017  8:04:13.92] - Validating values from properties file [D:\Utils\Scripts\properties\RCTDEV_domain.properties] 
+[Tue 01/24/2017  8:04:14.25] - ERROR. PIA Service [RCTDEVEXT-PIA] does not exist and Aborting the script [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+[Tue 01/24/2017  8:04:14.26] - Finished [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+########################################################################## 
+    
+    
+########################################################################## 
+[Tue 01/24/2017  8:07:16.46] - Begin [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+[Tue 01/24/2017  8:07:16.46] - Validating values from properties file [D:\Utils\Scripts\properties\RCTDEV_domain.properties] 
+[Tue 01/24/2017  8:07:16.74] - Successful Validation of values from Properties file [D:\Utils\Scripts\properties\RCTDEV_domain.properties] 
+[Tue 01/24/2017  8:07:16.75] - Stopping App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:07:16.77] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:07:16.77] - Waiting for 2 minutes after stopping PS service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:10:32.15] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 2): STOPPED 
+[Tue 01/24/2017  8:10:32.15] - Stopped App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:10:32.15] - Stopping PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:10:32.18] - [RCTDEV-PIA] Service Status (Loop 1): STOPPED 
+[Tue 01/24/2017  8:10:32.18] - Stopped PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:10:32.18] - Stopping PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:10:32.20] - [RCTDEVEXT-PIA] Service Status (Loop 1): STOPPED 
+[Tue 01/24/2017  8:10:32.20] - Stopped PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:10:32.20] - Starting Clean IPC and Clear Cache 
+[Tue 01/24/2017  8:12:01.77] - Completed - Clean IPC of App and Prcs Domains 
+[Tue 01/24/2017  8:12:11.71] - Completed - Clear Cache of App and Prcs Domains 
+[Tue 01/24/2017  8:12:11.71] - Starting PIA Clear Cache 
+[Tue 01/24/2017  8:12:12.96] - Completed - PIA Clear Cache 
+[Tue 01/24/2017  8:12:12.96] - Starting App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:12:32.63] - Waiting for 2 minutes after starting PS service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:14:32.17] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 1): START_PENDING 
+[Tue 01/24/2017  8:14:47.21] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 2): START_PENDING 
+[Tue 01/24/2017  8:15:02.18] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 3): START_PENDING 
+[Tue 01/24/2017  8:15:17.87] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 4): START_PENDING 
+[Tue 01/24/2017  8:15:32.21] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 5): RUNNING 
+[Tue 01/24/2017  8:15:32.21] - Started App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:15:32.21] - Starting PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:15:34.39] - Waiting for 10 seconds after starting PIA service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:15:44.17] - [RCTDEV-PIA] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:15:44.17] - Started PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:15:44.17] - Starting PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:15:46.52] - Waiting for 10 seconds after starting PIA service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:15:56.67] - [RCTDEVEXT-PIA] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:15:56.78] - Started PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:15:56.79] - Checking if JOLT port [9320] is alive 
+[Tue 01/24/2017  8:15:56.88] - Successful. JOLT Port [9320] is Active.    
+[Tue 01/24/2017  8:15:56.88] - Checking if JOLT port [9380] is alive 
+[Tue 01/24/2017  8:17:19.23] - WARNING. App Server [RCTDEVEXT] JOLT Port [9380] is not active. Please check. 
+[Tue 01/24/2017  8:17:19.23] - Checking if PIA port [8320] is alive 
+[Tue 01/24/2017  8:17:19.33] - Successful. PIA Port [8320] is Active.    
+[Tue 01/24/2017  8:17:19.33] - Checking if PIA port [8330] is alive 
+[Tue 01/24/2017  8:17:19.41] - Successful. PIA Port [8330] is Active.    
+[Tue 01/24/2017  8:17:19.42] - Dumping App/Prcs statuses using psadmin 
+
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+Prog Name      Queue Name  Grp Name      ID RqDone Load Done Current Service
+---------      ----------  --------      -- ------ --------- ---------------
+BBL.exe        44816       HCMDEVA+       0    196      9800 (  IDLE )
+PSMONITORSRV.e MONITOR     MONITOR        1      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         1      0         0 (  IDLE )
+PSWATCHSRV.exe WATCH       WATCH          1      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         2      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         3      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         4      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         5      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         6      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         7      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         8      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         9      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV        10      0         0 (  IDLE )
+PSBRKDSP.exe   BRKDQ_dflt  PUBSUB       100      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       100      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       100      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       101      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       101      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       101      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       102      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       102      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       102      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       103      0         0 (  IDLE )
+JSL.exe        00095.00200 JSLGRP       200      0         0 (  IDLE )
+PSPUBDSP.exe   PUBDQ_dflt  PUBSUB       200      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       201      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       202      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       203      0         0 (  IDLE )
+PSSUBDSP.exe   SUBDQ_dflt  PUBSUB       300      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       301      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       302      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       303      0         0 (  IDLE )
+JREPSVR.exe    00094.00250 JREPGRP      250      0         0 (  IDLE )
+
+> 
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+No bulletin board exists. Entering boot mode.
+
+> TMADMIN_CAT:111: ERROR: No such command.
+
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+Prog Name      Queue Name  Grp Name      ID RqDone Load Done Current Service
+---------      ----------  --------      -- ------ --------- ---------------
+BBL.exe        57737       HCMDEVA+       0     11       550 (  IDLE )
+PSMONITORSRV.e MONITOR     MONITOR        1      0         0 (  IDLE )
+PSAESRV.exe    00101.00001 AESRV          1      0         0 (  IDLE )
+PSAESRV.exe    00101.00002 AESRV          2      0         0 (  IDLE )
+PSAESRV.exe    00101.00003 AESRV          3      0         0 (  IDLE )
+PSPRCSRV.exe   SCHEDQ      BASE         101      0         0 (  IDLE )
+PSMSTPRC.exe   MSTRSCHQ    BASE         102      0         0 (  IDLE )
+PSDSTSRV.exe   DSTQ        BASE         103      0         0 (  IDLE )
+
+> [Tue 01/24/2017  8:17:23.56] - PIA status 
+
+Status Check Successful
+
+Status Check Successful
+[Tue 01/24/2017  8:17:27.14] - Finished [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+########################################################################## 
+    
+    
+########################################################################## 
+[Tue 01/24/2017  8:27:47.12] - Begin [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+[Tue 01/24/2017  8:27:47.12] - Validating values from properties file [D:\Utils\Scripts\properties\RCTDEV_domain.properties] 
+[Tue 01/24/2017  8:27:47.47] - Successful Validation of values from Properties file [D:\Utils\Scripts\properties\RCTDEV_domain.properties] 
+[Tue 01/24/2017  8:27:47.47] - Stopping App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:27:47.50] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:27:47.50] - Waiting for 2 minutes after stopping PS service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:31:02.13] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 2): STOPPED 
+[Tue 01/24/2017  8:31:02.13] - Stopped App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:31:02.13] - Stopping PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:31:02.15] - [RCTDEV-PIA] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:31:02.15] - Waiting for 10 seconds after stopping PIA service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:31:24.22] - [RCTDEV-PIA] Service Status (Loop 2): STOPPED 
+[Tue 01/24/2017  8:31:24.22] - Stopped PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:31:24.22] - Stopping PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:31:24.24] - [RCTDEVEXT-PIA] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:31:24.24] - Waiting for 10 seconds after stopping PIA service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:31:46.21] - [RCTDEVEXT-PIA] Service Status (Loop 2): STOPPED 
+[Tue 01/24/2017  8:31:46.21] - Stopped PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:31:46.21] - Starting Clean IPC and Clear Cache 
+[Tue 01/24/2017  8:33:25.51] - Completed - Clean IPC of App and Prcs Domains 
+[Tue 01/24/2017  8:33:28.13] - Completed - Clear Cache of App and Prcs Domains 
+[Tue 01/24/2017  8:33:28.14] - Starting PIA Clear Cache 
+[Tue 01/24/2017  8:33:28.15] - Completed - PIA Clear Cache 
+[Tue 01/24/2017  8:33:28.16] - Starting App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:33:35.76] - Waiting for 2 minutes after starting PS service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:35:35.36] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 1): START_PENDING 
+[Tue 01/24/2017  8:35:50.40] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 2): START_PENDING 
+[Tue 01/24/2017  8:36:05.19] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 3): START_PENDING 
+[Tue 01/24/2017  8:36:20.15] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 4): START_PENDING 
+[Tue 01/24/2017  8:36:35.14] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 5): START_PENDING 
+[Tue 01/24/2017  8:36:50.26] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 6): START_PENDING 
+[Tue 01/24/2017  8:37:05.23] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 7): START_PENDING 
+[Tue 01/24/2017  8:37:20.20] - [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] Service Status (Loop 8): RUNNING 
+[Tue 01/24/2017  8:37:20.21] - Started App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTDEV_RCTDEV_CFGHOME] 
+[Tue 01/24/2017  8:37:20.21] - Starting PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:37:22.79] - Waiting for 10 seconds after starting PIA service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:37:32.21] - [RCTDEV-PIA] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:37:32.21] - Started PIA Service [RCTDEV-PIA] 
+[Tue 01/24/2017  8:37:32.21] - Starting PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:37:34.54] - Waiting for 10 seconds after starting PIA service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:37:44.16] - [RCTDEVEXT-PIA] Service Status (Loop 1): RUNNING 
+[Tue 01/24/2017  8:37:44.16] - Started PIA Service [RCTDEVEXT-PIA] 
+[Tue 01/24/2017  8:37:44.16] - Checking if JOLT port [9320] is alive 
+[Tue 01/24/2017  8:37:44.30] - Successful. JOLT Port [9320] is Active.    
+[Tue 01/24/2017  8:37:44.30] - Checking if JOLT port [9380] is alive 
+[Tue 01/24/2017  8:37:44.67] - Successful. JOLT Port [9380] is Active.    
+[Tue 01/24/2017  8:37:44.68] - Checking if PIA port [8320] is alive 
+[Tue 01/24/2017  8:38:15.23] - Successful. PIA Port [8320] is Active.    
+[Tue 01/24/2017  8:38:15.23] - Checking if PIA port [8330] is alive 
+[Tue 01/24/2017  8:38:15.29] - Successful. PIA Port [8330] is Active.    
+[Tue 01/24/2017  8:38:15.30] - Dumping App/Prcs statuses using psadmin 
+
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+Prog Name      Queue Name  Grp Name      ID RqDone Load Done Current Service
+---------      ----------  --------      -- ------ --------- ---------------
+BBL.exe        44816       HCMDEVA+       0    196      9800 (  IDLE )
+PSMONITORSRV.e MONITOR     MONITOR        1      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         1      0         0 (  IDLE )
+PSWATCHSRV.exe WATCH       WATCH          1      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         2      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         3      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         4      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         5      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         6      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         7      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         8      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         9      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV        10      0         0 (  IDLE )
+PSBRKDSP.exe   BRKDQ_dflt  PUBSUB       100      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       100      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       100      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       101      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       101      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       101      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       102      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       102      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       102      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       103      0         0 (  IDLE )
+JSL.exe        00095.00200 JSLGRP       200      0         0 (  IDLE )
+PSPUBDSP.exe   PUBDQ_dflt  PUBSUB       200      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       201      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       202      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       203      0         0 (  IDLE )
+PSSUBDSP.exe   SUBDQ_dflt  PUBSUB       300      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       301      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       302      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       303      0         0 (  IDLE )
+JREPSVR.exe    00094.00250 JREPGRP      250      0         0 (  IDLE )
+
+> 
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+Prog Name      Queue Name  Grp Name      ID RqDone Load Done Current Service
+---------      ----------  --------      -- ------ --------- ---------------
+BBL.exe        38438       HCMDEVA+       0     35      1750 (  IDLE )
+PSMONITORSRV.e MONITOR     MONITOR        1      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         1      0         0 (  IDLE )
+PSWATCHSRV.exe WATCH       WATCH          1      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         2      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         3      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         4      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         5      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         6      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         7      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         8      0         0 (  IDLE )
+JREPSVR.exe    00094.00250 JREPGRP      250      0         0 (  IDLE )
+PSSUBDSP.exe   SUBDQ_dflt  PUBSUB       300      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       301      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       302      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       303      0         0 (  IDLE )
+JSL.exe        00095.00200 JSLGRP       200      0         0 (  IDLE )
+PSPUBDSP.exe   PUBDQ_dflt  PUBSUB       200      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       201      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       202      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       203      0         0 (  IDLE )
+PSBRKDSP.exe   BRKDQ_dflt  PUBSUB       100      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       100      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       100      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       101      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       101      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       101     36      1800 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       102      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       102      0         0 (  IDLE )
+PSPPMSRV.exe   PPMQ2       PPMGRP       102      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       103      0         0 (  IDLE )
+
+> 
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+Prog Name      Queue Name  Grp Name      ID RqDone Load Done Current Service
+---------      ----------  --------      -- ------ --------- ---------------
+BBL.exe        57737       HCMDEVA+       0     11       550 (  IDLE )
+PSMONITORSRV.e MONITOR     MONITOR        1      0         0 (  IDLE )
+PSAESRV.exe    00101.00001 AESRV          1      0         0 (  IDLE )
+PSAESRV.exe    00101.00002 AESRV          2      0         0 (  IDLE )
+PSAESRV.exe    00101.00003 AESRV          3      0         0 (  IDLE )
+PSPRCSRV.exe   SCHEDQ      BASE         101      0         0 (  IDLE )
+PSMSTPRC.exe   MSTRSCHQ    BASE         102      0         0 (  IDLE )
+PSDSTSRV.exe   DSTQ        BASE         103      0         0 (  IDLE )
+
+> [Tue 01/24/2017  8:38:17.03] - PIA status 
+
+Status Check Successful
+
+Status Check Successful
+[Tue 01/24/2017  8:38:20.46] - Finished [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+########################################################################## 

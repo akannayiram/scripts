@@ -1,0 +1,153 @@
+    
+    
+########################################################################## 
+[Fri 02/03/2017 10:12:14.83] - Begin [D:\Utils\Scripts\RCTDomainsReconfigureClearCache.cmd] 
+[Fri 02/03/2017 10:12:14.83] - Validating values from properties file [D:\Utils\Scripts\properties\RCTCFG_domain.properties] 
+[Fri 02/03/2017 10:12:14.90] - Successful Validation of values from Properties file [D:\Utils\Scripts\properties\RCTCFG_domain.properties] 
+[Fri 02/03/2017 10:12:14.90] - Stopping App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:12:14.92] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:12:14.92] - Waiting for 2 minutes after stopping PS service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:15:29.14] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 2): STOPPED 
+[Fri 02/03/2017 10:15:29.15] - Stopped App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:15:29.15] - Stopping PIA Service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:15:29.17] - [RCTCFG-PIA] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:15:29.18] - Waiting for 10 seconds after stopping PIA service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:15:51.20] - [RCTCFG-PIA] Service Status (Loop 2): STOPPED 
+[Fri 02/03/2017 10:15:51.20] - Stopped PIA Service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:15:51.21] - Stopping PIA Service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:15:51.23] - [RCTCFGEXT-PIA] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:15:51.23] - Waiting for 10 seconds after stopping PIA service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:16:13.23] - [RCTCFGEXT-PIA] Service Status (Loop 2): STOPPED 
+[Fri 02/03/2017 10:16:13.23] - Stopped PIA Service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:16:13.23] - Starting Clean IPC and Clear Cache 
+[Fri 02/03/2017 10:16:13.23] - App Domain#1 [RCTCFG] Force shutdown and then Clean IPC 
+[Fri 02/03/2017 10:16:21.96] - App Domain#1 [RCTCFG] Reconfiguring... 
+[Fri 02/03/2017 10:17:08.20] - App Domain#2 [RCTCFGEXT] Force shutdown and then Clean IPC 
+[Fri 02/03/2017 10:18:51.33] - App Domain#2 [RCTCFGEXT] Reconfiguring... 
+[Fri 02/03/2017 10:19:37.33] - Prcs Domain [RCTCFG] Kill and then Clean IPC 
+[Fri 02/03/2017 10:19:45.84] - Prcs Domain [RCTCFG] Reconfiguring... 
+[Fri 02/03/2017 10:20:22.84] - Completed - Clean IPC of App and Prcs Domains 
+[Fri 02/03/2017 10:20:25.52] - Completed - Clear Cache of App and Prcs Domains 
+[Fri 02/03/2017 10:20:25.53] - Starting PIA Clear Cache 
+[Fri 02/03/2017 10:20:27.08] - Completed - PIA Clear Cache 
+[Fri 02/03/2017 10:20:27.09] - Starting App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:20:45.03] - Waiting for 2 minutes after starting PS service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:22:45.37] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 1): START_PENDING 
+[Fri 02/03/2017 10:23:00.16] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 2): START_PENDING 
+[Fri 02/03/2017 10:23:15.26] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 3): START_PENDING 
+[Fri 02/03/2017 10:23:30.13] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 4): RUNNING 
+[Fri 02/03/2017 10:23:30.13] - Started App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:23:30.13] - Starting PIA Service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:23:32.98] - Waiting for 10 seconds after starting PIA service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:23:43.59] - [RCTCFG-PIA] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:23:43.59] - Started PIA Service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:23:43.59] - Starting PIA Service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:23:47.69] - Waiting for 10 seconds after starting PIA service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:24:04.65] - [RCTCFGEXT-PIA] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:24:05.06] - Started PIA Service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:24:05.06] - Checking if JOLT port [9420] is alive 
+[Fri 02/03/2017 10:24:06.44] - Successful. JOLT Port [9420] is Active.    
+[Fri 02/03/2017 10:24:06.45] - Checking if JOLT port [9450] is alive 
+[Fri 02/03/2017 10:25:26.24] - WARNING. App Server [RCTCFGEXT] JOLT Port [9450] is not active. Please check. 
+[Fri 02/03/2017 10:25:26.24] - Checking if PIA port [8350] is alive 
+[Fri 02/03/2017 10:25:26.30] - Successful. PIA Port [8350] is Active.    
+[Fri 02/03/2017 10:25:26.31] - Checking if PIA port [8360] is alive 
+[Fri 02/03/2017 10:25:26.36] - Successful. PIA Port [8360] is Active.    
+[Fri 02/03/2017 10:25:26.36] - Dumping App/Prcs statuses using psadmin 
+
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+Prog Name      Queue Name  Grp Name      ID RqDone Load Done Current Service
+---------      ----------  --------      -- ------ --------- ---------------
+BBL.exe        43927       HCMDEVA+       0    196      9800 (  IDLE )
+PSMONITORSRV.e MONITOR     MONITOR        1      0         0 (  IDLE )
+PSANALYTICSRV. 00080.00001 ANALYTI+       1      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         1      0         0 (  IDLE )
+PSWATCHSRV.exe WATCH       WATCH          1      0         0 (  IDLE )
+PSANALYTICSRV. 00080.00002 ANALYTI+       2      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         2      0         0 (  IDLE )
+PSANALYTICSRV. 00080.00003 ANALYTI+       3      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         3      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         4      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         5      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         6      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         7      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         8      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV         9      0         0 (  IDLE )
+PSAPPSRV.exe   APPQ        APPSRV        10      0         0 (  IDLE )
+PSBRKDSP.exe   BRKDQ_dflt  PUBSUB       100      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       100      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       101      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       101      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       102      0         0 (  IDLE )
+PSSAMSRV.exe   SAMQ        APPSRV       102      0         0 (  IDLE )
+PSBRKHND.exe   BRKHQ_dflt  PUBSUB       103      0         0 (  IDLE )
+JSL.exe        00095.00200 JSLGRP       200      0         0 (  IDLE )
+PSPUBDSP.exe   PUBDQ_dflt  PUBSUB       200      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       201      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       202      0         0 (  IDLE )
+PSPUBHND.exe   PUBHQ_dflt  PUBSUB       203      0         0 (  IDLE )
+PSSUBDSP.exe   SUBDQ_dflt  PUBSUB       300      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       301      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       302      0         0 (  IDLE )
+PSSUBHND.exe   SUBHQ_dflt  PUBSUB       303      0         0 (  IDLE )
+JREPSVR.exe    00094.00250 JREPGRP      250      0         0 (  IDLE )
+
+> 
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+No bulletin board exists. Entering boot mode.
+
+> TMADMIN_CAT:111: ERROR: No such command.
+
+> tmadmin - Copyright (c) 1996-2012 Oracle.
+Portions * Copyright 1986-1997 RSA Data Security, Inc.
+All Rights Reserved.
+Distributed under license by Oracle.
+Tuxedo is a registered trademark.
+Prog Name      Queue Name  Grp Name      ID RqDone Load Done Current Service
+---------      ----------  --------      -- ------ --------- ---------------
+BBL.exe        51385       HCMDEVA+       0     11       550 (  IDLE )
+PSMONITORSRV.e MONITOR     MONITOR        1      0         0 (  IDLE )
+PSAESRV.exe    00101.00001 AESRV          1      0         0 (  IDLE )
+PSAESRV.exe    00101.00002 AESRV          2      0         0 (  IDLE )
+PSAESRV.exe    00101.00003 AESRV          3      0         0 (  IDLE )
+PSPRCSRV.exe   SCHEDQ      BASE         101      0         0 (  IDLE )
+PSMSTPRC.exe   MSTRSCHQ    BASE         102      0         0 (  IDLE )
+PSDSTSRV.exe   DSTQ        BASE         103      0         0 (  IDLE )
+
+> [Fri 02/03/2017 10:25:28.81] - PIA status 
+
+Status Check Successful
+
+Status Check Successful
+[Fri 02/03/2017 10:25:30.47] - Finished [D:\Utils\Scripts\RCTDomainsReconfigureClearCache.cmd] 
+########################################################################## 
+    
+    
+########################################################################## 
+[Fri 02/03/2017 10:37:33.07] - Begin [D:\Utils\Scripts\RCTDomainsClearCache.cmd] 
+[Fri 02/03/2017 10:37:33.07] - Validating values from properties file [D:\Utils\Scripts\properties\RCTCFG_domain.properties] 
+[Fri 02/03/2017 10:37:33.14] - Successful Validation of values from Properties file [D:\Utils\Scripts\properties\RCTCFG_domain.properties] 
+[Fri 02/03/2017 10:37:33.15] - Stopping App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:37:33.17] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:37:33.17] - Waiting for 2 minutes after stopping PS service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:40:48.19] - [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] Service Status (Loop 2): STOPPED 
+[Fri 02/03/2017 10:40:48.20] - Stopped App/Prcs Service [PeopleSoft_D__PeopleSoft_RCTCFG_RCTCFG_CFGHOME] 
+[Fri 02/03/2017 10:40:48.20] - Stopping PIA Service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:40:48.22] - [RCTCFG-PIA] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:40:48.22] - Waiting for 10 seconds after stopping PIA service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:41:10.13] - [RCTCFG-PIA] Service Status (Loop 2): STOPPED 
+[Fri 02/03/2017 10:41:10.13] - Stopped PIA Service [RCTCFG-PIA] 
+[Fri 02/03/2017 10:41:10.13] - Stopping PIA Service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:41:10.15] - [RCTCFGEXT-PIA] Service Status (Loop 1): RUNNING 
+[Fri 02/03/2017 10:41:10.15] - Waiting for 10 seconds after stopping PIA service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:41:32.14] - [RCTCFGEXT-PIA] Service Status (Loop 2): STOPPED 
+[Fri 02/03/2017 10:41:32.15] - Stopped PIA Service [RCTCFGEXT-PIA] 
+[Fri 02/03/2017 10:41:32.15] - Starting Clean IPC and Clear Cache 

@@ -1,0 +1,246 @@
+@REM ######################################################
+@REM   Al Kannayiram, ConEdison 1/12/2017
+@REM  
+@REM ######################################################
+@REM   CacheClearSingleDomain.cmd 
+@REM      - To clear cache of App, Prcs, and Web
+@REM      - Requires 1 parameter: Properties file containing Domain details
+@REM   Usage:
+@REM      CacheClearSingleDomain.cmd <domain.properties>
+@REM ######################################################
+@REM
+@Echo off
+setLocal EnableDelayedExpansion
+SET script=%~n0
+SET parent=%~dp0
+
+@REM =================================
+@REM Look for input parameter
+@REM =================================
+if "%~1"=="" (
+   echo [%date% %time%] - ERROR! Missing input parameter
+   echo [%date% %time%] - ERROR! Execute the script with an input parameter
+   echo [%date% %time%] - ERROR! Aborting the script [%0]
+   goto :eof
+)
+if not exist %1 (
+   echo [%date% %time%] - ERROR! Input file [%1] does not exist
+   echo [%date% %time%] - ERROR! Check the Command Line and pass a valid input file parameter
+   echo [%date% %time%] - ERROR! Aborting the script [%0]
+   goto :eof
+)
+
+@REM =================================
+@REM Read properties file and Set environment variables
+@REM =================================
+for /f "eol=; delims=" %%A in (%1) do set %%A
+
+if not exist %LOGDIR%\NUL (
+   echo [%date% %time%] - ERROR! Log directory [%LOGDIR%] does not exist
+   echo [%date% %time%] - ERROR! Aborting the script [%0]
+   goto :eof
+)
+
+@REM =================================
+@REM Log filename with Year and Month
+@REM =================================
+set LOGFILE=%LOGDIR%\%script%_%date:~-4,4%%date:~4,2%.log
+set ERRFILE=%LOGDIR%\%script%_Error.txt
+if exist %ERRFILE% del /q %ERRFILE%
+
+echo[    >> %LOGFILE%
+echo[    >> %LOGFILE%
+set msg=##########################################################################
+echo %msg% >> %LOGFILE%
+set msg=[%date% %time%] - Begin [%0]
+echo %msg% >> %LOGFILE%
+
+@REM =================================
+@REM Validate values from properties file
+@REM =================================
+if not exist %PS_HOME%\NUL (
+   set msg="[%date% %time%] - ERROR! PS_HOME [%PS_HOME%] does not exist and Aborting the script [%0]"
+   echo %msg% >> %LOGFILE%
+   echo %msg% >> %ERRFILE%
+   goto :eof
+)
+if not exist %PS_CFG_HOME%\NUL (
+   set msg="[%date% %time%] - ERROR! PS_HOME [%PS_CFG_HOME%] does not exist and Aborting the script [%0]"
+   echo %msg% >> %LOGFILE%
+   echo %msg% >> %ERRFILE%
+   goto :eof
+)
+if not exist %PS_CFG_HOME%\appserv\%APPDOM%\NUL (
+   set msg="[%date% %time%] - ERROR! App Server [%APPDOM%] does not exist and Aborting the script [%0]"
+   echo %msg% >> %LOGFILE%
+   echo %msg% >> %ERRFILE%
+   goto :eof
+)
+if not exist %PS_CFG_HOME%\appserv\prcs\%PRCSDOM%\NUL (
+   set msg="[%date% %time%] - ERROR! Process Scheduler [%PRCSDOM%] does not exist and Aborting the script [%0]"
+   echo %msg% >> %LOGFILE%
+   echo %msg% >> %ERRFILE%
+   goto :eof
+)
+
+
+
+
+%PS_CFG_HOME\webserv\%PIADOM%\applications\peoplesoft\PORTAL.war\%PIASITE%
+%PS_CFG_HOME\webserv\%PIADOM%
+
+
+
+@REM =================================
+@REM Stop PeopleSoft App/Prcs Service
+@REM =================================
+set /a counter=1
+:psserviceloop1
+for /f "tokens=4" %%i in ('sc query "%PS_SERVICE%"^|findstr STATE') do set sts=%%i
+set msg="[%date% %time%] - [%PS_SERVICE%] Service Status (Loop !counter!): %sts%"
+echo %msg% >> %LOGFILE%
+if "%sts%" == "STOPPED" goto :PIAstop
+if "%sts%" == "RUNNING" (
+   net stop "%PS_SERVICE%"
+@REM Wait for 3 minutes after stopping PS service
+   timeout /t 180 /nobreak
+)
+set /a counter=!counter!+1
+if %counter% geq 5 goto :PIAstop
+timeout /t 30 /nobreak
+goto :psserviceloop1
+
+@REM =================================
+@REM Stop PIA Service
+@REM =================================
+:PIAstop
+set /a counter=1
+:PIAserviceloop
+for /f "tokens=4" %%i in ('sc query "%PIA_SERVICE%"^|findstr STATE') do set sts=%%i
+set msg="[%date% %time%] - [%PIA_SERVICE%] Service Status (Loop !counter!): %sts%"
+echo %msg% >> %LOGFILE%
+if "%sts%" == "STOPPED" goto :AppPrcsClean
+if "%sts%" == "RUNNING" (
+   net stop "%PIA_SERVICE%"
+@REM Wait for 10 seconds after stopping PIA service
+   timeout /t 10 /nobreak
+)   
+set /a counter=!counter!+1
+if %counter% geq 3 goto :AppPrcsClean
+timeout /t 10 /nobreak
+goto :PIAserviceloop
+
+@REM =================================
+@REM Clean IPC and Clear Cache
+@REM =================================
+:AppPrcsClean
+cd /d %PS_HOME%\appserv
+@REM App - Force shutdown and then Clean IPC
+psadmin -c shutdown! -d %APPDOM%
+psadmin -c cleanipc  -d %APPDOM%
+@REM Prcs - Kill and then Clean IPC
+psadmin -p kill      -d %PRCSDOM%
+psadmin -p cleanipc  -d %PRCSDOM%
+@REM Delete App CACHE
+if exist %PS_CFG_HOME%\appserv\%APPDOM%\CACHE (
+   rd /s /q %PS_CFG_HOME%\appserv\%APPDOM%\CACHE
+   mkdir    %PS_CFG_HOME%\appserv\%APPDOM%\CACHE
+)
+@REM Delete Prcs Cache
+if exist %PS_CFG_HOME%\appserv\prcs\%PRCSDOM%\CACHE (
+   rd /s /q %PS_CFG_HOME%\appserv\prcs\%PRCSDOM%\CACHE
+   mkdir    %PS_CFG_HOME%\appserv\prcs\%PRCSDOM%\CACHE
+)
+
+@REM =================================
+@REM PIA Clean
+@REM =================================
+@REM Execute PIA stop, if started outside of Service
+cd /d %PS_CFG_HOME\webserv\%PIADOM%\bin
+stopPIA.cmd
+@REM if psftcache folder exists, delete its contents
+if exist %PS_CFG_HOME\webserv\%PIADOM%\applications\peoplesoft\PORTAL.war\psftcache (
+   rd /s /q %PS_CFG_HOME\webserv\%PIADOM%\applications\peoplesoft\PORTAL.war\psftcache
+   mkdir    %PS_CFG_HOME\webserv\%PIADOM%\applications\peoplesoft\PORTAL.war\psftcache
+)
+if exist %PS_CFG_HOME\webserv\%PIADOM%\applications\peoplesoft\PORTAL.war\%PIASITE%\cache (
+   rd /s /q %PS_CFG_HOME\webserv\%PIADOM%\applications\peoplesoft\PORTAL.war\%PIASITE%\cache
+   mkdir    %PS_CFG_HOME\webserv\%PIADOM%\applications\peoplesoft\PORTAL.war\%PIASITE%\cache
+)
+
+@REM =================================
+@REM Start PeopleSoft App/Prcs Service
+@REM =================================
+net start "%PS_SERVICE"
+@REM Wait for 3 minutes after starting PS service
+timeout /t 180 /nobreak
+set /a counter=1
+:psserviceloop2
+for /f "tokens=4" %%i in ('sc query "%PS_SERVICE%"^|findstr STATE') do set sts=%%i
+set msg="[%date% %time%] - [%PS_SERVICE%] Service Status (Loop !counter!): %sts%"
+echo %msg% >> %LOGFILE%
+if "%sts%" == "RUNNING" goto :JoltPortCheck
+set /a counter=!counter!+1
+if %counter% geq 5 goto :PIAstop
+timeout /t 30 /nobreak
+goto :psserviceloop2
+
+@REM =================================
+@REM Check if JOLT port is alive
+@REM =================================
+:JoltPortCheck
+netstat -an|find "LISTENING"|find "  TCP"|find ":%JOLTPORT%"
+if [%ERRORLEVEL%] NEQ [0] (
+   set msg="[%date% %time%] - ERROR starting App Server [%APPDOM%]"
+   echo %msg% >> %LOGFILE%
+   echo %msg% >> %ERRFILE%
+)
+
+@REM =================================
+@REM Start PIA Service
+@REM =================================
+net stop "%PIA_SERVICE"
+@REM Wait for 10 seconds after starting PIA service
+timeout /t 10 /nobreak
+set /a counter=1
+:PIAserviceloop2
+for /f "tokens=4" %%i in ('sc query "%PIA_SERVICE%"^|findstr STATE') do set sts=%%i
+set msg="[%date% %time%] - [%PIA_SERVICE%] Service Status (Loop !counter!): %sts%"
+echo %msg% >> %LOGFILE%
+if "%sts%" == "RUNNING" goto :PIAPortCheck
+set /a counter=!counter!+1
+if %counter% geq 3 goto :PIAPortCheck
+timeout /t 10 /nobreak
+goto :PIAserviceloop2
+
+@REM =================================
+@REM Check if PIA port is alive
+@REM =================================
+:PIAPortCheck
+netstat -an|find "LISTENING"|find "  TCP"|find ":%PIAPORT%"
+if [%ERRORLEVEL%] NEQ [0] (
+   set msg="[%date% %time%] - ERROR starting PIA Server [%PIADOM% - %PIASITE%]"
+   echo %msg% >> %LOGFILE%
+   echo %msg% >> %ERRFILE%
+)
+
+@REM =================================
+@REM Dump App/Prcs statuses using psadmin
+@REM =================================
+cd /d %PS_HOME%\appserv
+@REM App Domain
+psadmin -c sstatus  -d %APPDOM% >> %LOGFILE% 2>&1
+@REM Prcs Domain
+psadmin -p sstatus  -d %PRCSDOM% >> %LOGFILE% 2>&1
+
+@REM =================================
+@REM Dump PIA status
+@REM =================================
+cd /d %PS_CFG_HOME\webserv\%PIADOM%\bin
+singleserverStatus.cmd >> %LOGFILE% 2>&1
+
+:fin
+set msg=[%date% %time%] - Finished [%0]
+echo %msg% >> %LOGFILE%
+set msg=##########################################################################
+echo %msg% >> %LOGFILE%
