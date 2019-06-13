@@ -1,0 +1,1252 @@
+Windows Batch Script-Cram
+
+############################
+Effect of Echo and @Echo
+-------------------------------
+:: print echo command and it's output
+echo 1
+:: does not print echo command just it's output
+@echo 2
+:: print dir command but not it's output
+dir > null
+:: does not print dir command nor it's output
+@dir c:\ > null
+:: does not print echo (and all other commands) but print it's output
+@echo off
+echo 3
+@echo on
+REM this comment will appear in console if echo off was not set
+@set /p pressedKey=Press any key to exit
+
+Code Snippet:
+@echo off
+// quote the path or else it won't work if there are spaces in the path
+SET INSTALL_PATH="c:\etc etc\test";
+if exist "%INSTALL_PATH%" (
+   //
+   echo 222;
+)
+
+####################################
+You need to escape the | character to prevent its being interpreted at the time 
+of parsing the loop command. Use ^ to escape it:
+
+FOR /f "delims=" %%A in ('dir /b "my_dir\*.csv" ^| find /V "summary"') do (
+rem do what you want with %%A here
+)
+
+Once escaped, the | becomes part of the '-delimited string. It is only 
+interpreted as a special symbol when that string is parsed separately from the 
+loop, as a "sub-command", according to the syntax. And that is done after 
+parsing the loop.
+
+######################################################
+IF
+
+The second part of the statement (in parentheses) is optional. Otherwise, the 
+system just goes to the next line in the batch file if the first condition isn't 
+met. The actual syntax is
+If (condition) (command1) Else (command2)
+
+The "Else" part is optional. The form "If not" can also be used to test if a 
+condition is false. Note that "If" tests for true or false in the Boolean sense.
+
+"If exist" statement
+
+There is a special "If exist" statement that can be used to test for the 
+existence of a file, followed by a command. An example would be:
+If exist somefile.ext del somefile.ext
+
+You can also use a negative existence test:
+if not exist somefile.ext echo no file 
+
+"If defined" statement
+
+Another special case is "if defined ", which is used to test for the existence 
+of a variable. For example:
+if defined somevariable somecommand
+
+This can also be used in the negative form, "if not defined".
+
+"If errorlevel" statement
+
+Yet another special case is "if errorlevel", which is used to test the exit 
+codes of the last command that was run. Various commands issue integer exit 
+codes to denote the status of the command. Generally, commands pass 0 if the 
+command was completed successfully and 1 if the command failed. Some commands 
+can pass additional code values. For example, there are five exit code values 
+for Xcopy. These exit code values are stored in the special variable errorlevel. 
+An example command would be:
+
+if errorlevel n somecommand
+where "n" is one of the integer exit codes. Note that the comparison is done by 
+checking if errorlevel is greater than or equal to n. If used with "not" the 
+comparison checks if errorlevel is less than n.
+
+Operator 	Meaning
+EQU 	equal to
+NEQ 	not equal to
+LSS 	less than
+LEQ 	less than or equal to
+GTR 	greater than
+GEQ 	greater than or equal to
+
+Comparison operators
+
+In some cases the condition to be met is obtained by comparing strings. For example
+if string1 == string2
+
+Note that the "equals" sign is written twice. This condition is met if the two 
+strings are exactly identical, including case. 
+For more general comparisons, use the operators in the table above.
+(The operators are given in upper case in the table but they are not case-dependent.) 
+Numerical comparisons only work with all-digit strings. 
+Otherwise, the comparison is done alphabetically. For example "a" is less than 
+"b". For case independence, use the switch "/i". An example command might read:
+
+if /i string1 gtr string2 somecommand
+
+When comparing variables that are strings, it may be best to enclose the variable name in quotes. For example, use:
+if "%1" == somestring somecommand 
+
+#########################################
+GOTO:
+"Goto" commands often occur in "if" statements. For example you might have a command of the type:
+if (condition) goto :label 
+
+The "End of File" (:eof) label for exiting a script (:eof is implicitly provided).
+
+Sometimes it is desirable to terminate a script if a certain condition is met (or not met). 
+One way to exit is to use the special label :eof in a goto command. 
+The label is not actually placed in the batch file. 
+Windows XP and later recognize :eof without any label explicitly placed at the end of the batch file. 
+Thus if you need to test for a particular condition that makes script termination desirable, you can write:
+if (condition) goto :eof
+
+Note that this terminates the script but does not necessarily close the command shell. 
+
+#########################################
+FOR
+
+for %%X in (set) do (command)
+
+What makes the "For" statement so powerful is the variety of objects that can be 
+put in the set of things that the command iterates through, the availability of 
+wildcards, and the capability for parsing files and command output. A number of 
+switches or modifiers are available to help define the type of items in the set. 
+Table I lists the switches. They are listed in upper case for clarity but are 
+not case-sensitive
+
+For loop variable is case-sensitive.
+
+Switch 	Function
+/D 	Indicates that the set contains directories.
+/R 	Causes the command to be executed recursively through the sub-directories of an indicated parent directory
+/L 	Loops through a command using starting, stepping, and ending parameters indicated in the set.
+/F 	Parses files or command output in a variety of ways 
+
+Simple iteration through a list
+The set of things that are to used can be listed explicitly. For example, the set could be a list of files:
+for %%X in (file1 file2 file3) do command
+(Care must be taken to use correct paths when doing file operations.) 
+
+A different example where the set items are strings is:
+For %%X in (eenie meenie miney moe) do (echo %%X)
+
+Wildcards can be also be used to denote a file set. For example:
+This will carry out the command on all files in the working directory with extension "jpg". 
+for %%X in (*.jpg) do command
+
+This process can be carried further by using several members in the set. 
+For example to carry out a command on more than one file type use:
+for %%X in (*.jpg *.gif *.png *.bmp) do command
+
+As always, keep in mind that the command line may choke on file names with 
+spaces unless the name is enclosed correctly in quotes. Therefore, you might 
+want to use "%%X" in the "command" section. 
+
+Working with directories
+
+If you wish to use directories in the variable set, use the switch /d. The form of the command is
+for /d %%X in (directorySet) do command
+
+An example that would list all the directories (but not sub-directories) on the C: drive is
+for /d %%X in (C:\*) do echo %%X 
+
+Recursing through sub-directories
+
+If you want a command to apply to the sub-directories as well as a parent directory, use the switch /r. 
+Then the command has the form:
+for /r [parent directory] %%X in (set) do command
+
+Note that you can designate the top directory in the tree that you want to work with. 
+This gets around the often cumbersome problem of taking into account 
+which is the working directory for the command shell. For example the statement:
+
+for /r C:\pictures %%X in (*.jpg) do (echo %%X >> E:\listjpg.txt) 
+
+will list all the jpg files in the directory C:\pictures and its sub-directories. 
+Of course, a "dir" command can do the same thing but this example illustrates this particular command.
+
+Parsing text files, strings, and command output
+
+This version of the "For" command allows you to examine and parse text from files, strings, and command output. 
+It has the form
+for /f [options] %%X in (source) do command
+
+"Options" are the text matching criteria and "source" is where the text is to be found. 
+One of the interesting applications is to analyze the output of a command or commands 
+and to take further action based on what the initial output was. 
+
+Loop command: against a set of files - conditionally perform a command against each item.
+
+Syntax
+        FOR /F ["options"] %%parameter IN (filenameset) DO command 
+      
+        FOR /F ["options"] %%parameter IN ("Text string to process") DO command
+
+Key   
+   options:
+      delims=xxx   The delimiter character(s) (default = a space)
+
+      skip=n       A number of lines to skip at the beginning of the file. 
+                    (default = 0)
+ 
+      eol=;        Character at the start of each line to indicate a comment 
+                   The default is a semicolon ; 
+
+      tokens=n     Specifies which numbered items to read from each line 
+                  (default = 1)
+
+      usebackq     Use the alternate quoting style:                        
+                   - Use double quotes for long file names in "filenameset".
+                   - Use single quotes for 'Text string to process'
+                   - Use back quotes for `command to process`
+
+   Filenameset    A set of one or more files.
+
+   command        The command to carry out, including any                  
+                  command-line parameters.
+  
+   %%parameter    A replaceable parameter:               
+                  in a batch file use %%G (on the command line %G)
+
+FOR /F processing of a text file consists of reading the file, one line of text 
+at a time and then breaking the line up into individual items of data called 
+'tokens'. The DO command is then executed with the parameter(s) set to the 
+token(s) found.
+
+By default, /F breaks up the line at each blank space " ", and any blank lines 
+are skipped, this default parsing behavior can be changed by applying one or 
+more of the "options" parameters. The option(s) must be contained within "a pair 
+of quotes"
+
+Within a FOR loop the visibility of FOR variables is controlled via SETLOCAL EnableDelayedExpansion
+
+usebackq
+    This option is useful when dealing with a filenameset that is a long 
+    filename containing spaces, it allows you to put double quotes around the 
+    filename. The backquote character ` is just below the ESC key on most 
+    keyboards.
+
+    Filenames which don't contan spaces can still be referenced without using quotes.
+
+    Usebackq can be abbreviated to useback (undocumented.)
+
+Skip
+    SKIP will skip processing a number of lines from the beginning of the file.
+    SKIP includes empty lines, but after the SKIP is complete, FOR /F ignores (does not iterate) empty lines.
+
+eol
+    The default end-of-line character is a semicolon ';' when the FOR command 
+    reads a text file (or even a character string), any line that STARTS with 
+    the eol character will be ignored. In other words it is treated as a 
+    comment.
+
+    Use eol=X to change the eol character to X.
+
+    Often you will want to turn this feature off so that every line of your data 
+    file is processed, in theory "eol=" should turn this feature off, but in 
+    practice this fails to work correctly - it will set eol to whatever the next 
+    character is, often the quote or space character. One workaround is to set 
+    eol to some unusual character that you don’t expect to ever encounter in the 
+    data file e.g. "eol=€" or "eol=¬". Another method is to escape every 
+    delimiter For /f tokens^=*^ delims^=^ eol^= %%a in (file.txt) do... (see 
+    forum for a discussion of this)
+
+Delims
+    More than one delimiter can be specified so a string like 'abcd+efg+hijk;lmno;pqr' can be broken up using "delims=;+".
+
+    You can use any character as a delimiter, but they are case sensitive.
+    If you don’t specify delims it will default to "delims=<tab><space>"
+
+    n.b. some text editors will enter the TAB character as a series of spaces, 
+    specifying more than one delimiter has been known to cause problems with 
+    some data sets.
+
+Tokens
+    tokens=2,4,6 will cause the second, fourth and sixth items on each line to be processed.
+
+    tokens=2-6 will cause the second, third, fourth, fifth and sixth items on each line to be processed.
+
+    tokens=* will cause all items on each line to be processed.
+
+    tokens=3* will process the third token and the 4th + all subsequent items, this can also be written as tokens=3,*
+
+    Each token specified will cause a corresponding parameter letter to be 
+    allocated. The letters used for tokens are case sensitive.
+
+    If the last character in the tokens= string is an asterisk, then additional 
+    parameters are allocated for all the remaining text on the line.
+
+    The following ASCII characters can be used as FOR tokens:
+    ASCII 63 - 93 inclusive, 31 tokens: ? @ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ]
+    ASCII 95-123 inclusive, 29 tokens: _ ` a b c d e f g h i j k l m n o p q r s t u v w x y z {
+    (there are a few other characters that can be used, but require escaping)
+
+    A single FOR /F command can never parse more than 31 tokens, to use more 
+    requires a workaround with multiple FOR commands.
+
+    Matching the same token more than once (tokens=1,2,1) can give unpredictable 
+    results. Token variables can of course be used multiple times: Echo %%G %%H 
+    %%G
+
+    FOR tokens variables (or parameter names) are global, so in complex scripts 
+    which call one FOR statement from within another FOR statement you can refer 
+    to both sets of parameters.
+
+The precedence/priority of FOR command options is: usebackq > skip > delims > eol > tokens
+
+Examples
+
+Extracting data from this text file which contains characters and commas (but no spaces or other punctuation):
+
+January,Snowy,02
+February,Rainy,15
+March,Sunny,25
+
+FOR /F "tokens=1,3 delims=," %%G IN (weather.txt) DO @echo %%G %%H
+
+The tricky part is splitting up each the line into the right tokens, 
+in this case I'm splitting on the comma character ',' 
+this splits the line into 3 chunks of text 
+and we pull out the first and third items with "tokens=1,3"
+token=1 (%%G) 	token=2 (ignored)	token=3 (%%H)
+  	 	 
+January 	  	02
+February 	  	15
+March 	  	25
+
+%%G is declared in the FOR statement and %%H is implicitly declared via the tokens= option.
+
+An alternative way to retrieve the same data would be:
+FOR /F "tokens=1,2,3 delims=," %%G IN (weather.txt) DO @echo %%G %%I
+
+Splitting a string that includes spaces.
+    This can be done just as above, replacing "delims=," with "delims= "
+
+    It is possible to specify either the tokens= and/or delims= options in any 
+    order, but whenever both delims and tokens are specified, they must be 
+    separated by a space, this space will NOT count as a token. For this reason 
+    it is recommended to always place delims as the last option before the 
+    closing quotation, it is much easier to see what is happening with one space 
+    (or no spaces) at the end of the string.
+
+Parse a text string
+    A string of text will be treated just like a single line of input from a 
+    file, the string must be enclosed in double quotes (or single quotes with 
+    usebackq).
+
+    Echo just the date from the following string
+    FOR /F "tokens=4 delims=," %%G IN ("deposit,$4500,123.4,12-AUG-09") DO @echo Date paid %%G
+
+Parse the output of a command:
+    FOR /F %%G IN ('"C:\program Files\command.exe"') DO ECHO %%G
+
+Parse the contents of a file:
+    FOR /F "tokens=1,2* delims=," %%G IN (C:\MyDocu~1\mytex~1.txt) DO ECHO %%G
+
+    FOR /F "usebackq tokens=1,2* delims=," %%G IN ("C:\My Documents\my textfile.txt") DO ECHO %%G
+
+Filenameset
+    To specify an exact set of files to be processed, such as all .MP3 files in 
+    a folder including subfolders and sorted by date - just use the DIR /b 
+    command to create the list of filenames ~ and use this variant of the FOR 
+    command syntax.
+
+Unicode
+    Many of the newer commands and utilities (e.g. WMIC) output text files in 
+    unicode format, these cannot be read by the FOR command which expects ASCII.
+    To convert the file format use the TYPE command.
+
+Errorlevel
+    If no data was processed then FOR /F will return ERRORLEVEL = 1
+
+FOR is an internal command.
+
+##################################
+SETLOCAL
+
+When used in a batch file, makes all further changes to environment variables local to the current batch file. 
+When used outside of a batch file, does nothing. Can be ended using ENDLOCAL. 
+Exiting a batch file automatically calls "end local". Can be used to create subprograms: see Functions.
+Furthermore, can be used to enable delayed expansion like this: "setlocal EnableDelayedExpansion". 
+Delayed expansion consists in the names of variables enclosed in exclamation marks 
+being replaced with their values only after the execution reaches the location of their use rather than at an earlier point.
+
+The following is an example of using delayed expansion in a script 
+that prints the specified number of first lines of a file, 
+providing some of the function of the command "head" known from other operating systems:
+
+@echo off
+
+call :myhead 2 File.txt
+exit /b
+
+:: Function myhead
+:: ===============
+:: %1 - lines count, %2 - file name
+:myhead
+setlocal EnableDelayedExpansion
+set counter=1
+for /f "tokens=*" %%i in (%2) do ( 
+  echo %%i
+  set /a counter=!counter!+1
+  if !counter! gtr %1 exit /b
+)
+exit /b
+
+##################################
+SET
+
+Displays or sets environment variables. With /P switch, it asks the user for 
+input, storing the result in the variable. With /A switch, it performs simple 
+arithmetic calculations, storing the result in the variable. With string 
+assignments, there must be no spaces before and after the equality sign; thus, 
+"set name = Peter" does not work, while "set name=Peter" does.
+
+Examples:
+    set
+        Displays a list of environment variables
+    set HOME
+        Displays the values of the environment variables whose names start with "HOME"
+    set MYNUMBER=56
+    set HOME=%HOME%;C:\Program Files\My Bin Folder
+    set /P user_input=Enter an integer:
+    set /A result = 4 * ( 6 / 3 )
+        Sets the result variable with the result of a calculation. 
+        
+
+##################################
+Percent tilde
+
+When a command-line argument contains a file name, special syntax can be used to get various information about the file.
+
+The following syntaxes expand to various information about the file passed as %1:
+Syntax 	Expansion Result 	Example
+ %~1 	%1 with no enclosing quotation marks 	Not provided
+ %~f1 	Full path with a drive letter 	C:\Windows\System32\notepad.exe
+ %~d1 	Drive letter 	C:
+ %~p1 	Drive-less path with the trailing backslash 	\Windows\System32\
+ %~n1 	For a file, the file name without path and extension For a folder, the folder name	notepad
+ %~x1 	File name extension including the period 	.exe
+ %~s1 	Modify of f, n and x to use short name 	Not provided
+ %~a1 	File attributes 	--a------
+ %~t1 	Date and time of last modification of the file 	02.11.2006 11:45
+ %~z1 	File size 	151040
+ %~pn1 	A combination of p and n 	\Windows\System32\notepad
+ %~dpnx1 	A combination of several letters 	C:\Windows\System32\notepad.exe
+ %~$PATH:1 	The full path of the first match found in the folders present in the PATH variable, or an empty string in no match.
+ %~n0 	 %~n applied to %0: The extensionless name of the batch	tildetest
+ %~nx0 	 %~nx applied to %0: The name of the batch	tildetest.bat
+ %~d0 	 %~f applied to %0: The drive letter of the batch	C:
+ %~dp0 	 %~dp applied to %0: The folder of the batch with trailing backslash	C:\Users\Joe Hoe\
+
+The same syntax applies to single-letter variables created by FOR command, such as "%%i".
+
+To learn about this subject from the command line, type "call /?" or "for /?".        
+
+##################################
+Environment Variables with Colon and Tilde
+
+Some commands in batch files have a leading tilde (~) character 
+or a trailing colon-tilde (:~) characters attached to environment variable names. 
+What's the purpose of these characters?
+
+Trailing Colon-Tilde Pair
+    Slice a string in a variable: %NAME:~s,n where s is the start position 
+    (zero-offset) and n is the number of characters. If s is negative, then the 
+    offset starts from the right side minus 1 (i.e. -1 refers to the rightmost 
+    character). If n is negative, then length - n characters, are extracted.
+
+    Replace a substring with another string in a variable: %NAME:s1=s2% where s1 
+    is substring to be replaced and s2 is the replacement.
+
+Leading Tilde
+    The leading tilde is used to decompose elements in a batch file parameter 
+    formatted as a path, such as the parent directory or file extension. 
+
+Environment variable substitution has been enhanced as follows:
+
+    %PATH:str1=str2%
+
+would expand the PATH environment variable, substituting each occurrence
+of "str1" in the expanded result with "str2".  "str2" can be the empty
+string to effectively delete all occurrences of "str1" from the expanded
+output.  "str1" can begin with an asterisk, in which case it will match
+everything from the beginning of the expanded output to the first
+occurrence of the remaining portion of str1.
+
+May also specify substrings for an expansion.
+
+    %PATH:~10,5%
+
+would expand the PATH environment variable, and then use only the 5
+characters that begin at the 11th (offset 10) character of the expanded
+result.  If the length is not specified, then it defaults to the
+remainder of the variable value.  If either number (offset or length) is
+negative, then the number used is the length of the environment variable
+value added to the offset or length specified.
+
+    %PATH:~-10%
+
+would extract the last 10 characters of the PATH variable.
+
+    %PATH:~0,-2%
+
+would extract all but the last 2 characters of the PATH variable.
+
+Finally, support for delayed environment variable expansion has been
+added.  This support is always disabled by default, but may be
+enabled/disabled via the /V command line switch to CMD.EXE.  See CMD /?
+
+Delayed environment variable expansion is useful for getting around
+the limitations of the current expansion which happens when a line
+of text is read, not when it is executed.  The following example
+demonstrates the problem with immediate variable expansion:
+
+    set VAR=before
+    if "%VAR%" == "before" (
+    if "%VAR%" == "before" (
+        set VAR=after
+        if "%VAR%" == "after" @echo If you see this, it worked
+    )
+
+would never display the message, since the %VAR% in BOTH IF statements
+is substituted when the first IF statement is read, since it logically
+includes the body of the IF, which is a compound statement.  So the
+IF inside the compound statement is really comparing "before" with
+"after" which will never be equal.  Similarly, the following example
+will not work as expected:
+
+    set LIST=
+    for %i in (*) do set LIST=%LIST% %i
+    echo %LIST%
+
+in that it will NOT build up a list of files in the current directory,
+but instead will just set the LIST variable to the last file found.
+Again, this is because the %LIST% is expanded just once when the
+FOR statement is read, and at that time the LIST variable is empty.
+So the actual FOR loop we are executing is:
+
+    for %i in (*) do set LIST= %i
+
+which just keeps setting LIST to the last file found.
+
+Delayed environment variable expansion allows you to use a different
+character (the exclamation mark) to expand environment variables at
+execution time.  If delayed variable expansion is enabled, the above
+examples could be written as follows to work as intended:
+
+    set VAR=before
+    if "%VAR%" == "before" (
+        set VAR=after
+        if "!VAR!" == "after" @echo If you see this, it worked
+    )
+
+    set VAR=before
+    if "%VAR%" == "before" (
+        set VAR=after
+        if "!VAR!" == "after" @echo If you see this, it worked
+    )
+
+    set LIST=
+    for %i in (*) do set LIST=!LIST! %i
+    echo %LIST%
+
+If Command Extensions are enabled, then there are several dynamic
+environment variables that can be expanded but which don't show up in
+the list of variables displayed by SET.  These variable values are
+computed dynamically each time the value of the variable is expanded.
+If the user explicitly defines a variable with one of these names, then
+that definition will override the dynamic one described below:
+
+%CD% - expands to the current directory string.
+
+%DATE% - expands to current date using same format as DATE command.
+
+%TIME% - expands to current time using same format as TIME command.
+
+%RANDOM% - expands to a random decimal number between 0 and 32767.
+
+%ERRORLEVEL% - expands to the current ERRORLEVEL value
+
+%CMDEXTVERSION% - expands to the current Command Processor Extensions
+    version number.
+
+%CMDCMDLINE% - expands to the original command line that invoked the
+    Command Processor.
+
+%HIGHESTNUMANODENUMBER% - expands to the highest NUMA node number
+    on this machine.
+#############################
+An example to enumurate comma delimited values in a string:
+lists.bat
+---------
+@echo off
+set themes=Hot Sun,Hard Granite,Shimmering Bright Twilight
+for %%a in ("%themes:,=" "%") do (
+    echo %%~a
+@REM    echo %%a
+)
+
+C:\Users\kannayirama\conedison\Scripts\workarea>lists.bat
+Hot Sun
+Hard Granite
+Shimmering Bright Twilight
+
+##########################################
+
+The string substitution feature can also be used to remove a substring from another string.
+Example
+
+@echo off 
+set str = Batch scripts is easy. It is really easy. 
+echo %str% 
+
+set str = %str:is =% 
+echo %str%
+
+The key thing to note about the above program is, the ‘is’ word is being removed from the string using the :’stringtoberemoved’ = command.
+Output
+
+The above command produces the following output.
+
+Batch scripts is easy. It is really easy. 
+Batch scripts easy. It really easy.
+
+##########################################
+
+Delayedexpansion
+
+Finally, support for delayed environment variable expansion has been
+added.  This support is always disabled by default, but may be
+enabled/disabled via the /V command line switch to CMD.EXE.  See CMD /?
+
+Delayed environment variable expansion is useful for getting around
+the limitations of the current expansion which happens when a line
+of text is read, not when it is executed.  The following example
+demonstrates the problem with immediate variable expansion:
+
+    set VAR=before
+    if "%VAR%" == "before" (
+        set VAR=after
+        if "%VAR%" == "after" @echo If you see this, it worked
+    )
+
+would never display the message, since the %VAR% in BOTH IF statements
+is substituted when the first IF statement is read, since it logically
+includes the body of the IF, which is a compound statement.  So the
+IF inside the compound statement is really comparing "before" with
+"after" which will never be equal.  Similarly, the following example
+will not work as expected:
+
+    set LIST=
+    for %i in (*) do set LIST=%LIST% %i
+    echo %LIST%
+
+in that it will NOT build up a list of files in the current directory,
+but instead will just set the LIST variable to the last file found.
+Again, this is because the %LIST% is expanded just once when the
+FOR statement is read, and at that time the LIST variable is empty.
+So the actual FOR loop we are executing is:
+
+    for %i in (*) do set LIST= %i
+
+which just keeps setting LIST to the last file found.
+
+Delayed environment variable expansion allows you to use a different
+character (the exclamation mark) to expand environment variables at
+execution time.  If delayed variable expansion is enabled, the above
+examples could be written as follows to work as intended:
+
+    set VAR=before
+    if "%VAR%" == "before" (
+        set VAR=after
+        if "!VAR!" == "after" @echo If you see this, it worked
+    )
+
+    set LIST=
+    for %i in (*) do set LIST=!LIST! %i
+    echo %LIST%
+
+##################################
+Question and Answer: (An example to see the delayed expansion working:)
+
+@echo off
+setlocal
+for /f %%i in ('echo aaa/') do set REPO=%%i
+if "%REPO%"=="" (
+  echo No input
+) else (
+  echo %REPO:~-1%
+  echo %REPO:~0,-1%
+  if %REPO:~-1%==/ set REPO=%REPO:~0,-1%
+  echo %REPO%
+)
+endlocal
+
+Please, observe:
+
+c:\Utils\hgbackup.cmd
+/
+aaa
+aaa/
+
+What is going on?
+Note, that I am assigning to REPO something that evaluates to "aaa", hence I 
+expect it to print "aaa", not "aaa/". It drives me crazy.
+
+solution:
+you need delayed expansion.
+
+Delayed expansion must be enabled before you can use it. Within a batch script 
+you can use setlocal enableDelayedExpansion
+
+@echo off
+setlocal enableDelayedExpansion
+
+for /f %%i in ('echo aaa/') do set REPO=%%i
+if "%REPO%"=="" (
+  echo No input
+) else (
+  echo %REPO:~-1%
+  echo %REPO:~0,-1%
+  if %REPO:~-1%==/ set REPO=%REPO:~0,-1%
+  echo !REPO!
+)
+
+endlocal
+
+EDIT
+
+The above fails if the IN() clause is changed such that REPO is undefined. For example: in (echo.)
+
+It fails because the entire IF/ELSE construct must have valid syntax, even it the ELSE clause will not be executed.
+
+If REPO is undefined, then
+
+if %REPO:~-1%==/ set REPO=%REPO:~0,-1%
+   expands to
+if ~-1REPO:~0,-1
+
+which is invalid syntax.
+
+The problem again is solved by using delayed expansion.
+
+@echo off
+setlocal enableDelayedExpansion
+for /f %%i in ('echo.') do set REPO=%%i
+if "%REPO%"=="" (
+  echo No input
+) else (
+  echo %REPO:~-1%
+  echo %REPO:~0,-1%
+  if !REPO:~-1!==/ set REPO=%REPO:~0,-1%
+  echo !REPO!
+)
+endlocal
+
+###############################################
+Can someone give me an example of where a batch script would act differently 
+with or without delayed expansion? Are there any situations where you would NOT 
+want to use delayed expansion? 
+
+Look at the following examples...
+
+Example 1: The following code DOESN'T use delayed expansion, so the variables in 
+the for loop are expanded only one time. This means that %Count% will always 
+expand to 0 in each iteration of the loop, no matter what we do to it with the 
+set command:
+
+@echo off
+set COUNT=0
+for %%v in (1 2 3 4) do (
+  set /A COUNT=%COUNT% + 1
+  echo Count = %COUNT%
+)
+pause
+
+So this script will output:
+	Count = 0
+	Count = 0
+	Count = 0
+	Count = 0
+
+This is not how this loop is supposed to work.
+
+Example 2: On the other hand, if we use delayed expansion, 
+we have the following script, which will run as expected.
+
+setlocal ENABLEDELAYEDEXPANSION
+set COUNT=0
+for %%v in (1 2 3 4) do (
+  set /A COUNT=!COUNT! + 1
+  echo Count = !COUNT!
+)
+
+pause
+
+and, as expected, it will output:
+	Count = 1
+	Count = 2
+	Count = 3
+	Count = 4
+
+When you use the ENABLEDELAYEDEXPANSION, expand a variable using ! instead of %, 
+the variable is re-expanded each time, and everything works as it's supposed to.
+
+###############################################
+I wanted to add a great example on how "EnableDelayedExpansion" (EDE) can be 
+useful outside of the ubiquitous FOR loop examples.
+
+Here is a line of earthquake data that I wish to parse (I call it it 1line.txt)
+
+ak_11574812 2015.04.29.193822 62.9525 -148.8849 1.0 9.5 1 49km S of Cantwell, Alaska
+
+The problem I ran into was that last segment of this line does not always start 
+at the same column number. So I needed to create a flexible SET command that 
+will accurately pluck out the last segment of this line.
+
+ECHO OFF
+setlocal enableDelayedExpansion
+set where=72
+set /p line=<1line.txt
+set locate=!line:~%where%,28!
+echo %locate%
+
+EDE allows me to place a variable (where) inside another variable (line). 
+EDE will translate the variable bracketed by % first, then process the variable 
+bracketed by ! and (in this case) push out the results into the "locate" variable.
+
+While not directly related to the question, this was the only place I've been 
+able to find out how to remove sub strings by passing in variables, and what the 
+correct order of !'s and %'s was, so thanks :) 
+
+############################################
+For the sake of completeness, let's answer another part of the question and show 
+a situation where you would NOT want to use delayed expansion when your data 
+contain an exclamation mark ! (and show two ways of processing such data):
+
+@ECHO OFF
+SETLOCAL EnableExtensions DisableDelayedExpansion
+
+  set "_auxFile=%temp%\%~n0.txt"
+  rem create multiline sample file
+  >"%_auxFile%" ( for /L %%G in (1,1,3) do echo line %%G is 100%% valid! Sure! Hurrah!)
+  rem create one-line sample file
+  >"%_auxFile%" echo this line is 100%% valid! Sure! Hurrah!
+
+  echo(
+  echo --- file content 
+  type "%_auxFile%"
+
+  echo(
+  SETLOCAL EnableDelayedExpansion
+    echo --- enabled delayed expansion chokes down unescaped exclamation marks^^^! "^!"
+    for /F "usebackq delims=" %%G in ("%_auxFile%") do (
+      set "_auxLine=%%~G"
+      echo loop var=%%~G
+      echo _auxLine=!_auxLine!
+    )
+  ENDLOCAL
+  echo(
+  SETLOCAL DisableDelayedExpansion
+    echo --- toggled delayed expansion works although might be laborious!
+    for /F "usebackq delims=" %%G in ("%_auxFile%") do (
+      set "_auxLine=%%G"
+      echo loop var=%%G
+      SETLOCAL EnableDelayedExpansion
+        echo _auxLine=!_auxLine!
+      ENDLOCAL
+    )
+  ENDLOCAL
+  echo(
+  SETLOCAL DisableDelayedExpansion
+    echo --- keep delayed expansion DISABLED: use CALL command!
+    for /F "usebackq delims=" %%G in ("%_auxFile%") do (
+      set "_auxLine=%%G"
+      echo loop var=%%G
+      call :ProcessVar
+    )
+  ENDLOCAL
+
+  rem delete the sample file
+  del "%_auxFile%"
+ENDLOCAL
+goto :eof
+
+:ProcessVar
+  echo _auxLine=%_auxLine%
+  echo WARNING: neither !_auxLine! nor %%G loop variable is available here!  
+goto :eof
+
+Note that above script shows proper ways of escaping
+
+    % percent sign by %% doubling it (delayed expansion does not matter), and
+    ! exclamation mark if delayed expansion is enabled:
+        "^!" if enclosed in a pair of double quotes, then use the cmd and batch-script general escape character ^ caret;
+        ^^^! otherwise, use three ^ carets.
+
+Output:
+
+==> D:\bat\SO\10558316.bat
+
+--- file content
+this line is 100% valid! Sure! Hurrah!
+
+--- enabled delayed expansion chokes down unescaped exclamation marks! "!"
+loop var=this line is 100% valid Hurrah
+_auxLine=this line is 100% valid Hurrah
+
+--- toggled delayed expansion works although might be laborious!
+loop var=this line is 100% valid! Sure! Hurrah!
+_auxLine=this line is 100% valid! Sure! Hurrah!
+
+--- keep delayed expansion DISABLED: use CALL command!
+loop var=this line is 100% valid! Sure! Hurrah!
+_auxLine=this line is 100% valid! Sure! Hurrah!
+WARNING: !_auxLine! as well as %G loop variables are not available here!
+
+==>
+##########################################
+ Not really, as "tokens=*" and "delims=" produce nearly the same result. 
+ As with "tokens=*" the delims are still active, they remove leading spaces and TABs 
+ from each line – jeb Jul 22 '11 at 11:29
+   	 
+	
+if you don't specify "delims=", then it will default to "delims= " (a space), 
+and it will trim extra whitespace between the tokens which means you are not 
+getting the real lines. "delims=" by itself will have a default of "tokens=1", 
+but since it grabs the whole line, you only need the one token. – Sahuagin
+
+##########################################
+Can someone please help me understand command file syntax
+
+IF "%INPUT_PATH%"=="" (
+    echo Searching for latest test results in: %TEST_RESULTS%
+    FOR /F "delims=" %%i in ('dir /O-D /B "%TEST_RESULTS%\*.trx"') DO (
+        SET INPUT_PATH=%TEST_RESULTS%\%%~ni
+        GOTO :DoneInputPath
+) )
+
+I get that it first checks if INPUT_PATH variable is empty and if it is empty 
+then enters into an inner for loop, I am lost otherwise
+
+specifically
+
+    FOR /F "delims=" %%i in ('dir /O-D /B "%TEST_RESULTS%\*.trx"')
+    SET INPUT_PATH=%TEST_RESULTS%\%%~ni
+
+Explanation:
+
+FOR /F "delims=" %%i in ('dir /O-D /B "%TEST_RESULTS%\*.trx"') ...
+
+The DIR command lists all of the *.TRX files within the %TEST_RESULTS% path. The 
+/B option gives the brief format (file names only). The /O-D option sorts the 
+files by last modified date descending (newest first).
+
+The FOR /F command has three modes, depending on the format of the IN() clause. 
+The fact that the IN() clause is enclosed in single quotes means that FOR /F 
+treats the contents as a command, and processes the output of the command, one 
+line at a time. The "delims=" option means do not parse into tokens (preserve 
+each entire line). So each line is iteratively loaded into the %%i variable. The 
+%%i variable only exists within the context of the FOR command.
+
+SET INPUT_PATH=%TEST_RESULTS%\%%~ni
+
+I think you know what most of this command does. The only "unusual" aspect is 
+the %%~ni syntax. That syntax expands the value of %%i into the base file name 
+only, without any extension.
+
+GOTO :DoneInputPath
+
+The GOTO causes the FOR loop to abort after the first iteration. This means that 
+INPUT_PATH will be set to the name of the most recently modified *.trx file, 
+since it sorted to the top.
+
+If the GOTO were not there, then the end result would be the oldest *.trx file instead.
+    
+######################
+
+Can anyone please explain exactly how the following code works, line by line. 
+I'm really lost. I've been trying to learn how to use the FOR command but I 
+don't understand this.
+
+@echo off
+
+for /f "tokens=* delims= " %%f in (myfile) do (
+  set line=%%f
+  call :processToken
+  )
+  goto :eof
+
+:processToken
+
+  for /f "tokens=1* delims=/" %%a in ("%line%") do (
+  echo Got one token: %%a
+  set line=%%b
+  )
+  if not "%line%" == "" goto :processToken
+  goto :eof
+
+Answer:
+
+for /f "tokens=* delims= " %%f in (myfile) do
+    This reads a file line-by-line, removing leading spaces (thanks, jeb).
+
+set line=%%f
+    sets then the line variable to the line just read and
+
+call :procesToken
+    calls a subroutine that does something with the line
+
+:processToken
+    is the start of the subroutine mentioned above.
+
+for /f "tokens=1* delims=/" %%a in ("%line%") do
+    will then split the line at /, but stopping tokenization after the first token.
+
+echo Got one token: %%a
+    will output that first token and
+
+set line=%%b
+    will set the line variable to the rest of the line.
+
+if not "%line%" == "" goto :processToken
+    And if line isn't yet empty (i.e. all tokens processed), 
+    it returns to the start, continuing with the rest of the line.
+
+###########################    
+Getting date-time into naming files:
+
+echo %date%
+Thu 11/10/2016
+echo %time%
+10:28:04.08
+
+Year: echo %date:~-4,4%
+Month: echo %date:~4,2%
+Day: echo %date:~7,2%
+
+Milliseconds: %time:~-2,2%
+Seconds: %time:~-5,2%
+Minutes: %time:~-8,2%
+Hours: %time:~-11,2%
+###########################  
+Question:
+--------
+How to collect each Service name and it's Status in Windows?
+I want to fetch all service_name and it's status without using any 3rd party tool. So far SC command was good enough to fetch one of the values, something like
+    sc query | findstr SERVICE_NAME
+but I also need STATUS for each SERVICE_NAME listed.
+
+ANSWER:
+-------
+Here's a command that should do the job:
+
+for /f "tokens=2" %s in ('sc query state^= all ^| find "SERVICE_NAME"') do
+    @(for /f "tokens=4" %t in ('sc query %s ^| find "STATE     "') do @echo %s is %t)
+
+How it works:
+---------------
+First sc query state= all | find "SERVICE_NAME" is run. 
+This command is designed to give you the service names, one per line. 
+The carets ^ (which I have removed here) are necessary in order to escape the special characters 
+that you want to affect the sc command and not the for command itself.
+
+Then the initial for /f parses the above output to remove the standard "SERVICE_NAME:" prefix from each line, giving you pure service names. At this point the output looks like this:
+
+C:\>for /f "tokens=2" %s in ('sc query state^= all ^| find "SERVICE_NAME"') do @echo %s
+AdobeFlashPlayerUpdateSvc
+AeLookupSvc
+ALG
+AppIDSvc
+Appinfo
+AppMgmt
+aspnet_state
+AudioEndpointBuilder
+AudioSrv
+
+This output is then fed to the next for /f, which runs sc query servicename, finds the line with the state, and isolates the 4th "word" (the current state).
+
+Finally, the name of each service is printed along with its state (at this point you can choose to do something different if you wish).
+
+Important note: If you run this inside a batch file, the percent signs (e.g. at %s) need to be doubled.
+#########################################
+Another FOR , delim, token example and explanation:
+I want to give you a sample batch file to show it:
+
+:: snip *.bat
+
+@echo off &setlocal
+set var=abc:def:ghi,jkl mno
+
+echo 1) default delimiter
+:: The default delimiters are space and tab.
+:: If you don't set any delimiter the default will be used.
+:: Let's see the 2 parts of the string.
+for /f "tokens=1,2" %%a in ("%var%") do echo 1st token "%%a" - 2nd token "%%b"
+echo.
+
+echo 2) use one delimiter
+:: Let's see the first 2 parts of the string if we use ":" as delimiter.
+for /f "delims=: tokens=1,2" %%a in ("%var%") do echo 1st token "%%a" - 2nd token "%%b"
+echo.
+
+echo 3) use more then one delimiter
+:: Let's see the parts of the string if we use ":" and "," as delimiters.
+for /f "delims=:, tokens=1-4" %%a in ("%var%") do echo 1st token "%%a" - 2nd token "%%b" - 3rd token "%%c" - 4th token "%%d"
+echo.
+
+echo 4) use default delimiter and show only the 2nd part of the string
+:: note: we start with the 2nd token - thats why the 2nd token is in %%a not in %%b
+for /f "tokens=2" %%a in ("%var%") do echo 2nd token "%%a"
+echo.
+
+echo 5) use a delimiter and show the 1st part and the leftover
+:: Let's see what the wildcard is good for
+for /f "delims=: tokens=1*" %%a in ("%var%") do echo 1st token "%%a" - leftover "%%b"
+echo.
+
+echo 6) Let's show the FOR - Help
+pause
+cls
+for /? |more
+
+:: snap *.bat
+###############################################
+IF "%~1"=="" GOTO :Usage
+
+~ will de-quote %1 if %1 itself is quoted.
+
+" " will protect from special characters passed. for example calling the script with &ping
+################################################
+
+Tricks with Command Line Arguments
+
+Command Line Arguments also support some really useful optional syntax to run 
+quasi-macros on command line arguments that are file paths. These macros are 
+called variable substitution support and can resolve the path, timestamp, or 
+size of file that is a command line argument. The documentation for this super 
+useful feature is a bit hard to find – run ‘FOR /?’ and page to the end of the 
+output.
+
+    %~1 removes quotes from the first command line argument, which is super 
+    useful when working with arguments to file paths. You will need to quote any 
+    file paths, but, quoting a file path twice will cause a file not found 
+    error.
+
+SET myvar=%~1
+
+    %~f1 is the full path to the folder of the first command line argument
+
+    %~fs1 is the same as above but the extra s option yields the DOS 8.3 short 
+    name path to the first command line argument (e.g., C:\PROGRA~1 is usually 
+    the 8.3 short name variant of C:\Program Files). This can be helpful when 
+    using third party scripts or programs that don’t handle spaces in file 
+    paths.
+
+    %~dp1 is the full path to the parent folder of the first command line 
+    argument. I use this trick in nearly every batch file I write to determine 
+    where the script file itself lives. The syntax SET parent=%~dp0 will put the 
+    path of the folder for the script file in the variable %parent%.
+
+    %~nx1 is just the file name and file extension of the first command line 
+    argument. I also use this trick frequently to determine the name of the 
+    script at runtime. If I need to print messages to the user, I like to prefix 
+    the message with the script’s name, like ECHO %~n0: some message instead of 
+    ECHO some message . The prefixing helps the end user by knowing the output 
+    is from the script and not another program being called by the script. It 
+    may sound silly until you spend hours trying to track down an obtuse error 
+    message generated by a script. This is a nice piece of polish I picked up 
+    from the Unix/Linux world.
+
+Some Final Polish
+
+I always include these commands at the top of my batch scripts:
+
+SETLOCAL ENABLEEXTENSIONS
+SET me=%~n0
+SET parent=%~dp0
+
+The SETLOCAL command ensures that I don’t clobber any existing variables after 
+my script exits. The ENABLEEXTENSIONS argument turns on a very helpful feature 
+called command processor extensions. Trust me, you want command processor 
+extensions. I also store the name of the script (without the file extension) in 
+a variable named %me%; I use this variable as the prefix to any printed messages 
+(e.g. ECHO %me%: some message). I also store the parent path to the script in a 
+variable named %parent%. I use this variable to make fully qualified filepaths 
+to any other files in the same directory as our script.
+
+########################################
+
+The string substitution feature can also be used to remove a substring from another string.
+Example
+
+@echo off 
+set str=Batch scripts is easy. It is really easy. 
+echo %str% 
+
+set str=%str:is =% 
+echo %str%
+
+The key thing to note about the above program is, the ‘is’ word is being removed 
+from the string using the :’stringtoberemoved’ = command. Output
+
+The above command produces the following output.
+
+Batch scripts is easy. It is really easy. 
+Batch scripts easy. It really easy.
+
+#########################################
+
+C:\Users\kannayirama\conedison\Scripts\Peoplesoft_Domain_Scripts>timeout /?
+
+TIMEOUT [/T] timeout [/NOBREAK]
+
+Description:
+    This utility accepts a timeout parameter to wait for the specified
+    time period (in seconds) or until any key is pressed. It also
+    accepts a parameter to ignore the key press.
+
+Parameter List:
+    /T        timeout       Specifies the number of seconds to wait.
+                            Valid range is -1 to 99999 seconds.
+
+    /NOBREAK                Ignore key presses and wait specified time.
+
+    /?                      Displays this help message.
+
+NOTE: A timeout value of -1 means to wait indefinitely for a key press.
+
+Examples:
+    TIMEOUT /?
+    TIMEOUT /T 10
+    TIMEOUT /T 300 /NOBREAK
+    TIMEOUT /T -1
+
+C:\Users\kannayirama\conedison\Scripts\Peoplesoft_Domain_Scripts>
+####################################
+
+
