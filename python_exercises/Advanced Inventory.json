@@ -1,0 +1,41 @@
+{
+  "Fruits": [
+    {
+      "name": "Apple",
+      "supplier": {"name": "Tropical Fruits Ltd.", "contact": "contact@orchard.example"},
+      "price": 0.5,
+      "quantity": 100,
+      "min_stock": 20
+    },
+    {
+      "name": "Banana",
+      "supplier": {"name": "Tropical Fruits Ltd.", "contact": "sales@tropical.example"},
+      "price": 0.3,
+      "quantity": 200,
+      "min_stock": 50
+    },
+    {
+      "name": "Peach",
+      "supplier": {"name": "Peach Gardens", "contact": "info@peachgardens.example"},
+      "price": 0.6,
+      "quantity": 150,
+      "min_stock": 30
+    }
+  ],
+  "Vegetables": [
+    {
+      "name": "Carrot",
+      "supplier": {"name": "Farm Produce", "contact": "info@farmproduce.example"},
+      "price": 0.2,
+      "quantity": 150,
+      "min_stock": 30
+    },
+    {
+      "name": "Broccoli",
+      "supplier": {"name": "Green Farm", "contact": "support@greenfarm.example"},
+      "price": 0.25,
+      "quantity": 100,
+      "min_stock": 20
+    }
+  ]
+}
